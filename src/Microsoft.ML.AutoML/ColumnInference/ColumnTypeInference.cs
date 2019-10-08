@@ -353,13 +353,19 @@ namespace Microsoft.ML.AutoML
                 col.Name = name;
             }
 
-            // validate & retrieve label column
-            var labelColumn = GetAndValidateLabelColumn(args, cols);
-
-            // if label column has all Boolean values, set its type as Boolean
-            if (labelColumn.HasAllBooleanValues())
+            if (args.Label != "AnomalyLabel")
             {
-                labelColumn.SuggestedType = BooleanDataViewType.Instance;
+                // validate & retrieve label column
+                var labelColumn = GetAndValidateLabelColumn(args, cols);
+
+                // if label column has all Boolean values, set its type as Boolean
+                if (labelColumn.HasAllBooleanValues())
+                {
+                    labelColumn.SuggestedType = BooleanDataViewType.Instance;
+                }
+            } else
+            {
+                cols = cols.Where(d => d.Name != "AnomalyLabel").ToArray();
             }
 
             var outCols = cols.Select(x => new Column(x.ColumnId, x.Name, x.SuggestedType)).ToArray();

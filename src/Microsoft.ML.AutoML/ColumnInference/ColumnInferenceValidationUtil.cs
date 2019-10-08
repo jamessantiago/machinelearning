@@ -17,7 +17,7 @@ namespace Microsoft.ML.AutoML
             var columnNames = ColumnInformationUtil.GetColumnNames(columnInfo);
             foreach (var columnName in columnNames)
             {
-                if (dataView.Schema.GetColumnOrNull(columnName) == null)
+                if (columnName != "AnomalyLabel" && dataView.Schema.GetColumnOrNull(columnName) == null)
                 {
                     throw new ArgumentException($"Specified column {columnName} " +
                         $"is not found in the dataset.");

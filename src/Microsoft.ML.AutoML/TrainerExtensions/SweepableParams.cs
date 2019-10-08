@@ -178,6 +178,16 @@ namespace Microsoft.ML.AutoML
             };
         }
 
+        public static IEnumerable<SweepableParam> BuildPcaParams()
+        {
+            return new SweepableParam[]
+            {
+                new SweepableLongParam("Rank", 1, 100, stepSize: 1),
+                new SweepableDiscreteParam("Oversampling", new object[] {0, 10, 20, 30, 40, 50 }),
+                new SweepableDiscreteParam("EnsureZeroMean", null, isBool: true)
+            };
+        }
+
         /// <summary>
         /// Gets the name of every hyperparameter swept across all trainers.
         /// </summary>
@@ -199,6 +209,7 @@ namespace Microsoft.ML.AutoML
             sweepableParams.AddRange(BuildOlsParams());
             sweepableParams.AddRange(BuildSgdParams());
             sweepableParams.AddRange(BuildSymSgdLogisticRegressionParams());
+            sweepableParams.AddRange(BuildPcaParams());
             return new HashSet<string>(sweepableParams.Select(p => p.Name));
         }
     }

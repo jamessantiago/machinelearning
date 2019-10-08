@@ -65,14 +65,13 @@ namespace Microsoft.ML.AutoML.Test
         public void AutoFitAnomalyTest()
         {
             var context = new MLContext();
-            var dataPath = DatasetUtil.DownloadUciAdultDataset();
-            var columnInferrence = context.Auto().InferColumns(dataPath, DatasetUtil.UciAdultLabel);
-            var textLoader = context.Data.CreateTextLoader(columnInferrence.TextLoaderOptions);
-            var trainData = textLoader.Load(dataPath);
+            var columnInference = context.Auto().InferColumns(DatasetUtil.TrivialMulticlassDatasetPath, DatasetUtil.TrivialMulticlassDatasetLabel);
+            var textLoader = context.Data.CreateTextLoader(columnInference.TextLoaderOptions);
+            var trainData = textLoader.Load(DatasetUtil.TrivialMulticlassDatasetPath);
             var result = context.Auto()
                 .CreateAnomalyDetectionExperiment()
-                .Execute(trainData, new ColumnInformation() { LabelColumnName = DatasetUtil.UciAdultLabel });
-            Assert.IsTrue(result.BestRun.ValidationMetrics.FakeAccuracy == 1);
+                .Execute(trainData, labelColumnName: "AnomalyLabel");
+            Assert.IsTrue(result.BestRun.ValidationMetrics.AreaUnderRocCurve == 1);
             Assert.IsNotNull(result.BestRun.Estimator);
             Assert.IsNotNull(result.BestRun.Model);
             Assert.IsNotNull(result.BestRun.TrainerName);

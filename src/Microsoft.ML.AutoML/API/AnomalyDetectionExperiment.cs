@@ -21,20 +21,20 @@ namespace Microsoft.ML.AutoML
 
         public AnomalyExperimentSettings()
         {
-            OptimizingMetric = AnomalyDetectionMetric.FakeAccuracy;
+            OptimizingMetric = AnomalyDetectionMetric.AreaUnderRocCurve;
             Trainers = Enum.GetValues(typeof(AnomalyDetectionTrainer)).OfType<AnomalyDetectionTrainer>().ToList();
         }
     }
 
-    public class AnomalyDetectionMetrics
-    {
-        public double FakeAccuracy { get; }
+    //public class AnomalyDetectionMetrics
+    //{
+    //    public double FakeAccuracy { get; }
 
-        public AnomalyDetectionMetrics()
-        {
-            FakeAccuracy = 1;
-        }
-    }
+    //    public AnomalyDetectionMetrics()
+    //    {
+    //        FakeAccuracy = 1;
+    //    }
+    //}
 
     /// <summary>
     /// Binary classification metric that AutoML will aim to optimize in its sweeping process during an experiment.
@@ -42,9 +42,13 @@ namespace Microsoft.ML.AutoML
     public enum AnomalyDetectionMetric
     {
         /// <summary>
-        /// See <see cref="AnomalyDetectionMetrics.FakeAccuracy"/>.
+        /// See <see cref="AnomalyDetectionMetrics.AreaUnderRocCurve"/>.
         /// </summary>
-        FakeAccuracy
+        AreaUnderRocCurve,
+        /// <summary>
+        /// See <see cref="AnomalyDetectionMetrics.DetectionRateAtFalsePositiveCount"/>.
+        /// </summary>
+        DetectionRateAtFalsePositiveCount
     }
 
     /// <summary>

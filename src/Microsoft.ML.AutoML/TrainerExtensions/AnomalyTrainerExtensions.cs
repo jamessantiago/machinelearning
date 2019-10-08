@@ -15,15 +15,26 @@ namespace Microsoft.ML.AutoML
 
     internal class RandomizedPcaExtension : ITrainerExtension
     {
+        private const int DefaultRank = 1;
+
         public IEnumerable<SweepableParam> GetHyperparamSweepRanges()
         {
-            return new List<SweepableParam>().AsEnumerable();
+            return SweepableParams.BuildPcaParams();
         }
 
         public ITrainerEstimator CreateInstance(MLContext mlContext, IEnumerable<SweepableParam> sweepParams,
             ColumnInformation columnInfo)
         {
-            return mlContext.AnomalyDetection.Trainers.RandomizedPca(rank: 1, ensureZeroMean: false);
+            RandomizedPcaTrainer.Options options = null;
+            if (sweepParams == null || !sweepParams.Any())
+            {
+                options = new RandomizedPcaTrainer.Options();
+                options.Rank = DefaultRank;
+            } else
+            {
+                options = TrainerExtensionUtil.CreateOptions<RandomizedPcaTrainer.Options>(sweepParams);
+            }
+            return mlContext.AnomalyDetection.Trainers.RandomizedPca(options);
         }
 
         public PipelineNode CreatePipelineNode(IEnumerable<SweepableParam> sweepParams, ColumnInformation columnInfo)

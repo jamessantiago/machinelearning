@@ -214,7 +214,7 @@ namespace Microsoft.ML.AutoML
 
         private static void ValidateTrainDataColumn(IDataView trainData, string columnName, string columnPurpose, IEnumerable<DataViewType> allowedTypes = null)
         {
-            if (columnName == null)
+            if (columnName == null || columnName == "AnomalyLabel")
             {
                 return;
             }
