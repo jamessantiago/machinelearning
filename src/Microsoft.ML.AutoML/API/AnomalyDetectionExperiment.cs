@@ -21,20 +21,20 @@ namespace Microsoft.ML.AutoML
 
         public AnomalyExperimentSettings()
         {
-            OptimizingMetric = AnomalyDetectionMetric.AreaUnderRocCurve;
+            OptimizingMetric = AnomalyDetectionMetric.FakeAccuracy;
             Trainers = Enum.GetValues(typeof(AnomalyDetectionTrainer)).OfType<AnomalyDetectionTrainer>().ToList();
         }
     }
 
-    //public class AnomalyDetectionMetrics
-    //{
-    //    public double FakeAccuracy { get; }
-
-    //    public AnomalyDetectionMetrics()
-    //    {
-    //        FakeAccuracy = 1;
-    //    }
-    //}
+    //
+    // Summary:
+    //     Evaluation results for anomaly detection(unsupervised learning algorithm).
+    public class FakeAnomalyDetectionMetrics
+    {
+        public double FakeAccuracy { get; set; }
+        public double AreaUnderRocCurve { get; set; }
+        public double DetectionRateAtFalsePositiveCount { get; set; }
+    }
 
     /// <summary>
     /// Binary classification metric that AutoML will aim to optimize in its sweeping process during an experiment.
@@ -42,11 +42,15 @@ namespace Microsoft.ML.AutoML
     public enum AnomalyDetectionMetric
     {
         /// <summary>
-        /// See <see cref="AnomalyDetectionMetrics.AreaUnderRocCurve"/>.
+        /// Fake accuracy metric that always returns 1
+        /// </summary>
+        FakeAccuracy,
+        /// <summary>
+        /// See <see cref="FakeAnomalyDetectionMetrics.AreaUnderRocCurve"/>.
         /// </summary>
         AreaUnderRocCurve,
         /// <summary>
-        /// See <see cref="AnomalyDetectionMetrics.DetectionRateAtFalsePositiveCount"/>.
+        /// See <see cref="FakeAnomalyDetectionMetrics.DetectionRateAtFalsePositiveCount"/>.
         /// </summary>
         DetectionRateAtFalsePositiveCount
     }
@@ -71,7 +75,7 @@ namespace Microsoft.ML.AutoML
     ///  [!code-csharp[AnomalyDetectionExperiment](~/../docs/samples/docs/samples/Microsoft.ML.AutoML.Samples/AnomalyDetectionExperiment.cs)]
     /// ]]></format>
     /// </example>
-    public sealed class AnomalyDetectionExperiment : ExperimentBase<AnomalyDetectionMetrics, AnomalyExperimentSettings>
+    public sealed class AnomalyDetectionExperiment : ExperimentBase<FakeAnomalyDetectionMetrics, AnomalyExperimentSettings>
     {
         internal AnomalyDetectionExperiment(MLContext context, AnomalyExperimentSettings settings)
             : base(context,
@@ -83,12 +87,12 @@ namespace Microsoft.ML.AutoML
         {
         }
 
-        private protected override RunDetail<AnomalyDetectionMetrics> GetBestRun(IEnumerable<RunDetail<AnomalyDetectionMetrics>> results)
+        private protected override RunDetail<FakeAnomalyDetectionMetrics> GetBestRun(IEnumerable<RunDetail<FakeAnomalyDetectionMetrics>> results)
         {
             return BestResultUtil.GetBestRun(results, MetricsAgent, OptimizingMetricInfo.IsMaximizing);
         }
 
-        private protected override CrossValidationRunDetail<AnomalyDetectionMetrics> GetBestCrossValRun(IEnumerable<CrossValidationRunDetail<AnomalyDetectionMetrics>> results)
+        private protected override CrossValidationRunDetail<FakeAnomalyDetectionMetrics> GetBestCrossValRun(IEnumerable<CrossValidationRunDetail<FakeAnomalyDetectionMetrics>> results)
         {
             return BestResultUtil.GetBestRun(results, MetricsAgent, OptimizingMetricInfo.IsMaximizing);
         }

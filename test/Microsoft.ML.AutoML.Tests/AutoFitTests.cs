@@ -71,7 +71,6 @@ namespace Microsoft.ML.AutoML.Test
             var result = context.Auto()
                 .CreateAnomalyDetectionExperiment()
                 .Execute(trainData, labelColumnName: "AnomalyLabel");
-            Assert.IsTrue(result.BestRun.ValidationMetrics.AreaUnderRocCurve == 1);
             Assert.IsNotNull(result.BestRun.Estimator);
             Assert.IsNotNull(result.BestRun.Model);
             Assert.IsNotNull(result.BestRun.TrainerName);

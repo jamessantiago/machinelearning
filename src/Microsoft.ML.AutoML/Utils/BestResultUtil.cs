@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.ML.AutoML.Experiment.MetricsAgents;
 using Microsoft.ML.Data;
 
 namespace Microsoft.ML.AutoML
@@ -30,6 +31,14 @@ namespace Microsoft.ML.AutoML
             MulticlassClassificationMetric metric)
         {
             var metricsAgent = new MultiMetricsAgent(null, metric);
+            var metricInfo = new OptimizingMetricInfo(metric);
+            return GetBestRun(results, metricsAgent, metricInfo.IsMaximizing);
+        }
+
+        public static RunDetail<FakeAnomalyDetectionMetrics> GetBestRun(IEnumerable<RunDetail<FakeAnomalyDetectionMetrics>> results,
+            AnomalyDetectionMetric metric)
+        {
+            var metricsAgent = new AnomalyMetricsAgent(null, metric);
             var metricInfo = new OptimizingMetricInfo(metric);
             return GetBestRun(results, metricsAgent, metricInfo.IsMaximizing);
         }

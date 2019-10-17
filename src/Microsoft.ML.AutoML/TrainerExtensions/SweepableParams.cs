@@ -182,9 +182,10 @@ namespace Microsoft.ML.AutoML
         {
             return new SweepableParam[]
             {
-                new SweepableLongParam("Rank", 1, 100, stepSize: 1),
-                new SweepableDiscreteParam("Oversampling", new object[] {0, 10, 20, 30, 40, 50 }),
-                new SweepableDiscreteParam("EnsureZeroMean", null, isBool: true)
+                new SweepableDiscreteParam("FakeAccuracy", new object[] { 1 }),
+                //new SweepableLongParam("Rank", 1, 100, stepSize: 1),
+                //new SweepableDiscreteParam("Oversampling", new object[] {0, 10, 20, 30, 40, 50 }),
+                //new SweepableDiscreteParam("EnsureZeroMean", null, isBool: true)
             };
         }
 
