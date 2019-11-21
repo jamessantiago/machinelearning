@@ -4,6 +4,8 @@
 
 using System;
 using System.IO;
+using Microsoft.ML.Data;
+using Microsoft.ML.Trainers;
 
 namespace Microsoft.ML.AutoML
 {

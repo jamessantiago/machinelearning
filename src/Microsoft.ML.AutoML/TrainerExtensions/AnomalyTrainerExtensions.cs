@@ -4,10 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.ML.Data;
 using Microsoft.ML.Trainers;
-using Microsoft.ML.Trainers.FastTree;
-using Microsoft.ML.Trainers.LightGbm;
 
 namespace Microsoft.ML.AutoML
 {

@@ -101,7 +101,7 @@ namespace Microsoft.ML.AutoML
 
             var rowCount = DatasetDimensionsUtil.CountRows(trainData, crossValRowCountThreshold);
 
-            if (rowCount < crossValRowCountThreshold)
+            if (rowCount < crossValRowCountThreshold && _task != TaskKind.Anomaly)
             {
                 const int numCrossValFolds = 10;
                 var splitResult = SplitUtil.CrossValSplit(Context, trainData, numCrossValFolds, columnInformation?.SamplingKeyColumnName);
